@@ -212,6 +212,8 @@ lambda-list::=
   [&aux {var | (var [init-form])}*])"
   (if (symbolp name)
       (progn (setf (gethash name *function-lambda-list*) lambda-list)
+             (when (stringp (first body))
+               (setf (gethash name *function-documentation*) (first body)))
              `(defun% ,name ,lambda-list ,@body))
       (progn (assert (and (listp name) (= (length name) 2) (eq 'setf (car name))) ()
                      "(defun ~s ~s ...) needs to have a symbol or (setf symbol) for a name." name lambda-list)
@@ -228,6 +230,8 @@ lambda-list::=
     (setf (gethash name *setf-expanders*)
           (lambda (access-args store-form)
             `(,mangled-function-name ,store-form ,@access-args)))
+    (when (stringp (first body))
+      (setf (gethash name *function-documentation*) (first body)))
     `(defun ,mangled-function-name ,lambda-list ,@body)))
 
 ;;; slightly broken WRT lambda lists

@@ -129,6 +129,9 @@ block.")
 (defvar *function-lambda-list* (make-hash-table)
   "Table of lambda lists for defined functions.")
 
+(defvar *function-documentation* (make-hash-table)
+  "Table of documentation strings for defined functions.")
+
 ;;; macros
 (defun make-macro-dictionary ()
   (make-hash-table :test 'eq))
